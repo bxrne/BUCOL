@@ -10,6 +10,7 @@
 static Variable* hashTable1[HASH_SIZE];
 static Variable* hashTable2[HASH_SIZE];
 
+
 unsigned hash1(char* s) {
     unsigned hashval = 0;
     while (*s != '\0') { 
@@ -19,6 +20,7 @@ unsigned hash1(char* s) {
     return hashval % HASH_SIZE;
 }
 
+// Need both hash functions to be independent to avoid infinite loops
 unsigned hash2(char* s) {
     unsigned hashval = 0;
     while (*s != '\0') {
@@ -63,17 +65,17 @@ Variable* set(char* identifier, int size) {
     unsigned hashval1 = hash1(identifier);
     unsigned hashval2 = hash2(identifier);
     
-    for (int i = 0; i < MAX_RETRIES; i++) {
+    for (int i = 0; i < MAX_RETRIES; i++) { 
         if (hashTable1[hashval1] == NULL) {
             hashTable1[hashval1] = newVar;
             return newVar;
         }
-        if (hashTable2[hashval2] == NULL) {
+        if (hashTable2[hashval2] == NULL) { 
             hashTable2[hashval2] = newVar;
             return newVar;
         }
         
-        // Evict existing variable from the table
+        // Evict existing variable from the table (the cuckoo step)
         Variable* evictedVar = hashTable1[hashval1];
         hashTable1[hashval1] = newVar;
         newVar = evictedVar; // Try to insert evicted variable in the other table
