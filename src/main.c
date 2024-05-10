@@ -34,7 +34,7 @@ bool declareVariable(char *identifier, int size) {
 bool moveFrom(char *source_id, char *dest_id) {
   Variable *source = get(source_id);
   Variable *dest = get(dest_id);
-
+    
   if (source == NULL) {
     printf("err | %s not declared\n", source_id);
     return false;

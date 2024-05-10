@@ -36,5 +36,4 @@ IGNORE [ \t\n]
 [0-9]+ { yylval.str = strdup(yytext); return(INTEGER_LITERAL); }
 \"[^";.]*\" { yylval.str = strdup(yytext); return(STRING_LITERAL); } /* Excluding literal escapable tokens */ 
 
-. return(0); /* ignore everything else */
 %%
